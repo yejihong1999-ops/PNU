@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2022-2024 산불 발생 현황 대시보드</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@400;600;700&display=swap');
+        body { font-family: 'Pretendard', sans-serif; background-color: #f8fafc; }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-4px); }
+        .gradient-bg { background: linear-gradient(135deg, #ef4444 0%, #f97316 100%); }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+    <div class="max-w-6xl mx-auto">
+        <!-- 헤더 -->
+        <header class="mb-8 text-center md:text-left">
+            <h1 class="text-3xl font-bold text-slate-800 mb-2">🔥 2022~2024 산불 발생 현황 종합 분석</h1>
+            <p class="text-slate-500 text-lg">데이터로 보는 산불 발생 추이와 예방 대책</p>
+        </header>
+
+        <!-- 요약 카드 세션 -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+            <div class="card p-6 border-l-4 border-red-500">
+                <p class="text-sm font-semibold text-slate-500 mb-1">3년 평균 발생 건수</p>
+                <h2 class="text-3xl font-bold text-slate-800">약 630<span class="text-lg font-normal ml-1">건</span></h2>
+                <p class="text-xs text-green-600 mt-2">▼ 점진적 감소 추세</p>
+            </div>
+            <div class="card p-6 border-l-4 border-orange-500">
+                <p class="text-sm font-semibold text-slate-500 mb-1">봄철 발생 비중</p>
+                <h2 class="text-3xl font-bold text-slate-800">61<span class="text-lg font-normal ml-1">%</span></h2>
+                <p class="text-xs text-red-500 mt-2">최대 위험 시기 (3월~5월)</p>
+            </div>
+            <div class="card p-6 border-l-4 border-slate-500">
+                <p class="text-sm font-semibold text-slate-500 mb-1">인적 실화 비중</p>
+                <h2 class="text-3xl font-bold text-slate-800">57.4<span class="text-lg font-normal ml-1">% 이상</span></h2>
+                <p class="text-xs text-slate-500 mt-2">부주의에 의한 발생이 대다수</p>
+            </div>
+        </div>
+
+        <!-- 차트 세션 -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+            <!-- 연도별 발생 추이 -->
+            <div class="card p-6">
+                <h3 class="text-lg font-bold mb-4 text-slate-700">📅 연도별 발생 건수 추이</h3>
+                <canvas id="trendChart" height="200"></canvas>
+            </div>
+            <!-- 원인별 발생 비중 -->
+            <div class="card p-6">
+                <h3 class="text-lg font-bold mb-4 text-slate-700">🔎 산불 발생 주요 원인</h3>
+                <canvas id="causeChart" height="200"></canvas>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            <!-- 계절별 데이터 리스트 -->
+            <div class="card p-6 lg:col-span-1">
+                <h3 class="text-lg font-bold mb-4 text-slate-700">🍂 계절별 발생 비중</h3>
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>봄 (3~5월)</span>
+                            <span class="font-bold">61%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full" style="width: 61%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>겨울 (12~2월)</span>
+                            <span class="font-bold">23%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="bg-orange-400 h-2 rounded-full" style="width: 23%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>가을 (9~11월)</span>
+                            <span class="font-bold">9%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="bg-yellow-400 h-2 rounded-full" style="width: 9%"></div>
+                        </div>
+                    </div>
+                    <div>
+                        <div class="flex justify-between text-sm mb-1">
+                            <span>여름 (6~8월)</span>
+                            <span class="font-bold">7%</span>
+                        </div>
+                        <div class="w-full bg-slate-100 rounded-full h-2">
+                            <div class="bg-blue-400 h-2 rounded-full" style="width: 7%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 주요 인프라 및 대응 정보 -->
+            <div class="lg:col-span-2 space-y-6">
+                <div class="gradient-bg text-white p-6 rounded-2xl shadow-lg">
+                    <h3 class="text-xl font-bold mb-4">🚀 주요 대응 인프라 현황</h3>
+                    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-center">
+                        <div>
+                            <p class="text-2xl font-bold">104대</p>
+                            <p class="text-xs opacity-80">초대형 헬기</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold">500km</p>
+                            <p class="text-xs opacity-80">진화 임도 신설</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold">29%</p>
+                            <p class="text-xs opacity-80">입산 통제 구역</p>
+                        </div>
+                        <div>
+                            <p class="text-2xl font-bold">400ha</p>
+                            <p class="text-xs opacity-80">내화수림 조성</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card p-6 border-t-4 border-slate-800">
+                    <h3 class="text-lg font-bold mb-2 text-slate-700">💡 예방 핵심 과제</h3>
+                    <ul class="text-sm text-slate-600 space-y-2">
+                        <li>✅ <strong>맞춤형 예방:</strong> 봄철 산불 조심 기간 입산자 및 농가 계도 강화</li>
+                        <li>✅ <strong>초동 진화:</strong> 신설 임도를 활용한 골든타임 확보</li>
+                        <li>✅ <strong>인식 개선:</strong> 부주의에 의한 실화 경각심 고취 교육</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <footer class="mt-12 text-center text-slate-400 text-sm pb-8">
+            <p>© 2026 산불 발생 현황 분석 시스템. 모든 수치는 제공된 보고서 데이터를 근거로 합니다.</p>
+        </footer>
+    </div>
+
+    <script>
+        // 연도별 추이 차트
+        const trendCtx = document.getElementById('trendChart').getContext('2d');
+        new Chart(trendCtx, {
+            type: 'line',
+            data: {
+                labels: ['2022년', '2023년', '2024년'],
+                datasets: [{
+                    label: '산불 발생 건수',
+                    data: [820, 596, 475],
+                    borderColor: '#ef4444',
+                    backgroundColor: 'rgba(239, 68, 68, 0.1)',
+                    borderWidth: 3,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 6,
+                    pointBackgroundColor: '#ef4444'
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: false } },
+                scales: {
+                    y: { beginAtZero: false, min: 400, max: 900 }
+                }
+            }
+        });
+
+        // 원인별 비중 차트
+        const causeCtx = document.getElementById('causeChart').getContext('2d');
+        new Chart(causeCtx, {
+            type: 'doughnut',
+            data: {
+                labels: ['입산자 실화', '논·밭두렁 소각', '기타 실화'],
+                datasets: [{
+                    data: [33.4, 24.0, 42.6],
+                    backgroundColor: ['#ef4444', '#f97316', '#94a3b8'],
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'bottom' }
+                },
+                cutout: '60%'
+            }
+        });
+    </script>
+</body>
+</html>
