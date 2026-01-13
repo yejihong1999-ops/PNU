@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2025 문헌정보학과 입시 분석</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; background-color: #f8fafc; }
+        .card { background: white; border-radius: 1rem; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1); transition: transform 0.2s; }
+        .card:hover { transform: translateY(-2px); }
+        .nav-link { position: relative; }
+        .nav-link::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -4px; left: 0; background-color: #3b82f6; transition: width 0.3s; }
+        .nav-link:hover::after { width: 100%; }
+        .btn-home { transition: all 0.3s ease; }
+        .btn-home:hover { background-color: #1e40af; transform: scale(1.05); }
+    </style>
+</head>
+<body class="text-slate-800">
+
+    <!-- Navigation Bar -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <button onclick="window.location.reload()" class="btn-home bg-blue-600 text-white p-2 rounded-lg shadow-md flex items-center gap-2 px-4">
+                        <i class="fas fa-home"></i>
+                        <span class="font-bold">HOME</span>
+                    </button>
+                    <span class="ml-4 text-xl font-bold text-slate-900 hidden sm:block">2025 입시 분석</span>
+                </div>
+                <div class="flex gap-6 text-sm font-medium">
+                    <a href="#stats" class="nav-link text-slate-600 hover:text-blue-600">주요통계</a>
+                    <a href="#chart-section" class="nav-link text-slate-600 hover:text-blue-600">경쟁률차트</a>
+                    <a href="#analysis" class="nav-link text-slate-600 hover:text-blue-600">심층분석</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-6xl mx-auto px-4 py-8">
+        <!-- Header Section -->
+        <header class="mb-12 text-center">
+            <h1 class="text-3xl sm:text-4xl font-extrabold text-slate-900 mb-4">
+                2025학년도 <span class="text-blue-600">문헌정보학과</span> 경쟁률 분석
+            </h1>
+            <p class="text-slate-500 max-w-2xl mx-auto italic">
+                "전국 대학 데이터를 바탕으로 분석한 문헌정보학 전공 선호도 및 지역별 입시 경향 리포트"
+            </p>
+        </header>
+
+        <!-- Stats Grid -->
+        <section id="stats" class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+            <div class="card p-6 border-l-4 border-blue-500">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-500 text-sm font-bold">최고 경쟁률</span>
+                    <i class="fas fa-trophy text-yellow-500"></i>
+                </div>
+                <div class="text-2xl font-bold text-slate-900">13.2 : 1</div>
+                <div class="text-sm text-blue-600">서울여자대학교</div>
+            </div>
+            <div class="card p-6 border-l-4 border-indigo-500">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-500 text-sm font-bold">수도권 평균(TOP3)</span>
+                    <i class="fas fa-city text-indigo-500"></i>
+                </div>
+                <div class="text-2xl font-bold text-slate-900">13.07 : 1</div>
+                <div class="text-sm text-indigo-600">서울여대, 숙명여대, 연세대</div>
+            </div>
+            <div class="card p-6 border-l-4 border-emerald-500">
+                <div class="flex items-center justify-between mb-2">
+                    <span class="text-slate-500 text-sm font-bold">거점국립대 약진</span>
+                    <i class="fas fa-chart-line text-emerald-500"></i>
+                </div>
+                <div class="text-2xl font-bold text-slate-900">5개교 포진</div>
+                <div class="text-sm text-emerald-600">TOP 10 내 과반수 차지</div>
+            </div>
+        </section>
+
+        <!-- Chart Section -->
+        <section id="chart-section" class="mb-12">
+            <div class="card p-8">
+                <div class="flex items-center justify-between mb-6">
+                    <h2 class="text-xl font-bold text-slate-900 flex items-center gap-2">
+                        <i class="fas fa-poll"></i> 경쟁률 TOP 10 대학 현황
+                    </h2>
+                    <span class="text-xs text-slate-400 font-medium">* 막대 안쪽 마크는 대학별 상징 이미지(이니셜+U)입니다.</span>
+                </div>
+                <div class="h-[500px] relative">
+                    <canvas id="compChart"></canvas>
+                </div>
+            </div>
+        </section>
+
+        <!-- Analysis Section -->
+        <section id="analysis" class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+            <div class="space-y-6">
+                <h2 class="text-2xl font-bold text-slate-900 mb-4">심층 분석 리포트</h2>
+                
+                <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="bg-blue-100 text-blue-600 w-12 h-12 rounded-lg flex items-center justify-center shrink-0">
+                        <i class="fas fa-venus text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">수도권 여대의 압도적 강세</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mt-1">서울여대와 숙명여대가 나란히 1, 2위를 차지했습니다. 전통적으로 여학생들의 선호도가 높은 전공 특성이 반영되었습니다.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="bg-emerald-100 text-emerald-600 w-12 h-12 rounded-lg flex items-center justify-center shrink-0">
+                        <i class="fas fa-university text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">실속파의 선택, 거점 국립대</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mt-1">경북대, 충남대 등 국립대가 4~9위를 점령했습니다. 안정적인 취업 인프라와 경제적 효율성을 동시에 고려한 선택으로 풀이됩니다.</p>
+                    </div>
+                </div>
+
+                <div class="flex gap-4 p-4 bg-white rounded-xl shadow-sm border border-slate-100">
+                    <div class="bg-purple-100 text-purple-600 w-12 h-12 rounded-lg flex items-center justify-center shrink-0">
+                        <i class="fas fa-star text-xl"></i>
+                    </div>
+                    <div>
+                        <h3 class="font-bold text-slate-800">연세대학교의 부동의 인기</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mt-1">최상위권 명문대의 네임밸류와 우수한 커리큘럼이 결합되어 13:1이라는 높은 경쟁률을 유지했습니다.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bg-slate-900 text-white p-8 rounded-2xl flex flex-col justify-between shadow-xl">
+                <div>
+                    <span class="bg-blue-500 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider">Expert Insight</span>
+                    <h2 class="text-2xl font-bold mt-4 mb-6 leading-tight">문헌정보학 전공의<br>미래와 입시 전략</h2>
+                    <ul class="space-y-4 text-slate-300">
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>데이터 분석 및 디지털 기록 관리의 중요성 증대로 학과의 위상이 높아지고 있습니다.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>10:1 이상의 경쟁률이 흔하므로 단순 내신 외에 비교과 활동의 전문성이 중요합니다.</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fas fa-check-circle text-blue-400 mt-1"></i>
+                            <span>IT 기술과 융합된 정보 서비스 역량을 자기소개서나 면접에서 강조하는 것이 유리합니다.</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="mt-8 pt-6 border-t border-slate-700">
+                    <div class="text-sm text-slate-400 mb-2">분석 담당자</div>
+                    <div class="font-bold">입시 분석 시스템 v1.0</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-slate-100 py-8 border-t border-slate-200">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+            <p class="text-slate-500 text-sm">© 2025학년도 대학 입시 분석 보고서 아카이브</p>
+        </div>
+    </footer>
+
+    <script>
+        // 대학 정보 및 컬러 설정 (코드 뒤에 'U' 추가)
+        const universityData = [
+            { name: '서울여대', code: 'SWU', color: '#C21D53' },
+            { name: '숙명여대', code: 'SMU', color: '#003893' },
+            { name: '연세대', code: 'YSU', color: '#16407D' },
+            { name: '경북대', code: 'KNU', color: '#D32F2F' },
+            { name: '충남대', code: 'CNU', color: '#004EA2' },
+            { name: '인천대', code: 'INU', color: '#005596' },
+            { name: '부산대', code: 'PNU', color: '#005BAC' },
+            { name: '전남대', code: 'JNU', color: '#004C97' },
+            { name: '전북대', code: 'JBNU', color: '#003D8A' },
+            { name: '건국대(글)', code: 'KKU', color: '#006A3B' }
+        ];
+
+        // 이미지 로딩 에러 방지를 위해 미리 생성
+        const logoImages = universityData.map(uni => {
+            const img = new Image();
+            img.src = `https://api.dicebear.com/7.x/initials/svg?seed=${uni.code}&backgroundColor=${uni.color.replace('#','')}&textColor=white`;
+            return img;
+        });
+
+        const ctx = document.getElementById('compChart').getContext('2d');
+
+        // 커스텀 플러그인: 막대 안쪽에 로고 또는 대체 텍스트 그리기
+        const logoOnBars = {
+            id: 'logoOnBars',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                const meta = chart.getDatasetMeta(0);
+                
+                meta.data.forEach((bar, index) => {
+                    const uni = universityData[index];
+                    const img = logoImages[index];
+                    const size = 32;
+                    const xPos = bar.x - size / 2;
+                    const yPos = bar.y + 12;
+
+                    // 막대 높이가 충분할 때만 그림
+                    if (yPos + size < bar.base) {
+                        ctx.save();
+                        
+                        // 이미지가 정상적으로 로드되었는지 확인
+                        if (img.complete && img.naturalWidth !== 0) {
+                            ctx.beginPath();
+                            ctx.arc(bar.x, yPos + size/2, size/2, 0, Math.PI * 2);
+                            ctx.closePath();
+                            ctx.clip();
+                            ctx.drawImage(img, xPos, yPos, size, size);
+                        } else {
+                            // 폴백: 이미지 로드 실패 시 원형 도형과 텍스트 직접 그리기
+                            ctx.beginPath();
+                            ctx.arc(bar.x, yPos + size/2, size/2, 0, Math.PI * 2);
+                            ctx.fillStyle = uni.color;
+                            ctx.fill();
+                            ctx.closePath();
+                            
+                            ctx.fillStyle = 'white';
+                            ctx.font = 'bold 10px sans-serif'; // 글자수가 늘어났으므로 폰트 크기 약간 조절
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(uni.code, bar.x, yPos + size/2);
+                        }
+                        
+                        ctx.restore();
+                    }
+                });
+            }
+        };
+
+        const chartData = {
+            labels: universityData.map(u => u.name),
+            datasets: [{
+                label: '경쟁률 (n:1)',
+                data: [13.2, 13.0, 13.0, 11.9, 11.8, 11.6, 9.8, 8.4, 8.2, 6.9],
+                backgroundColor: (context) => {
+                    const index = context.dataIndex;
+                    return index < 3 ? 'rgba(59, 130, 246, 0.85)' : 'rgba(148, 163, 184, 0.65)';
+                },
+                borderRadius: 12,
+                borderWidth: 0,
+                hoverBackgroundColor: '#1d4ed8'
+            }]
+        };
+
+        const myChart = new Chart(ctx, {
+            type: 'bar',
+            data: chartData,
+            plugins: [logoOnBars],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: '#0f172a',
+                        padding: 12,
+                        callbacks: {
+                            label: (context) => ` 경쟁률: ${context.parsed.y}:1`
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 15,
+                        grid: { color: '#f1f5f9' },
+                        ticks: { font: { weight: '500' } }
+                    },
+                    x: {
+                        grid: { display: false },
+                        ticks: { font: { weight: 'bold', size: 13 } }
+                    }
+                }
+            }
+        });
+
+        // 이미지가 로드될 때마다 차트 갱신
+        logoImages.forEach(img => {
+            img.onload = () => myChart.render();
+            img.onerror = () => myChart.render();
+        });
+
+        // 부드러운 스크롤
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
