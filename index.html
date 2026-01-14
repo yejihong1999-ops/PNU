@@ -4,291 +4,228 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>빅데이터 분석 포트폴리오</title>
-    <!-- Google Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Lucide Icons -->
-    <script src="https://unpkg.com/lucide@latest"></script>
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
+        /* 세련된 현대적 서체 프리텐다드 및 스위트 적용 */
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css');
+        @import url('https://webfontworld.github.io/suite/SUITE.css');
+
+        :root {
+            --primary-soft: #f8fafc;
+            --accent-blue: #3b82f6;
+            --accent-pink: #f472b6;
+            --accent-indigo: #6366f1;
+        }
+
         body {
-            font-family: 'IBM Plex Sans KR', sans-serif;
-            background-color: #f8fafc;
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif;
+            background-color: #ffffff;
             color: #1e293b;
             overflow-x: hidden;
+            word-break: keep-all;
+            letter-spacing: -0.02em;
         }
 
-        /* Code Rain Canvas */
-        #codeCanvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: -1;
-            /* 더 연하게 보이도록 opacity를 0.25에서 0.12로 조정 */
-            opacity: 0.12; 
-            pointer-events: none;
+        /* 제목 전용 서체 */
+        h1, h2, h3, h4 {
+            font-family: 'SUITE', sans-serif;
+            font-weight: 800;
         }
 
-        /* Soft Glassmorphism Card */
-        .glass-card {
-            background: rgba(255, 255, 255, 0.85);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.9);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        .soft-card {
+            background: #ffffff;
+            border: 1px solid #f1f5f9;
+            border-radius: 24px;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
         }
 
-        .glass-card:hover {
+        .soft-card:hover {
             transform: translateY(-8px);
-            background: rgba(255, 255, 255, 0.95);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.08);
-            border-color: #38bdf8;
+            border-color: var(--accent-blue);
+            box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.05), 0 8px 10px -6px rgb(0 0 0 / 0.05);
         }
 
-        /* Text Gradient */
-        .text-gradient {
-            background: linear-gradient(to right, #0284c7, #0d9488);
+        .bubble-text {
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Animations */
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(20px);
-            animation: fadeInUp 0.8s forwards;
+        .bg-pattern {
+            background-color: #ffffff;
+            background-image: radial-gradient(#e2e8f0 1.2px, transparent 1.2px);
+            background-size: 32px 32px;
         }
 
-        @keyframes fadeInUp {
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .nav-link {
+            position: relative;
+            transition: color 0.3s;
         }
 
-        .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.2s; }
-        .delay-300 { animation-delay: 0.3s; }
-        .delay-400 { animation-delay: 0.4s; }
-        .delay-500 { animation-delay: 0.5s; }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -4px;
+            left: 50%;
+            background-color: var(--accent-blue);
+            transition: all 0.3s;
+            transform: translateX(-50%);
+        }
+
+        .nav-link:hover::after {
+            width: 80%;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3b82f6, #6366f1);
+            box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.3);
+        }
     </style>
 </head>
-<body class="antialiased min-h-screen flex flex-col">
+<body class="bg-pattern">
 
-    <!-- Code Rain Background -->
-    <canvas id="codeCanvas"></canvas>
-
-    <!-- Header -->
-    <header class="w-full py-6 px-8 flex justify-between items-center glass-card border-b border-slate-200 sticky top-0 z-50">
-        <div class="flex items-center gap-2">
-            <i data-lucide="database" class="text-sky-600"></i>
-            <span class="font-bold text-xl tracking-wide text-slate-800">Data Analyst Portfolio</span>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 px-8 py-5 flex justify-between items-center bg-white/70 backdrop-blur-xl border-b border-slate-200">
+        <h1 class="text-2xl font-extrabold tracking-tight text-slate-900">
+            <span class="bubble-text">DATA</span> PORTFOLIO
+        </h1>
+        <div class="space-x-10 text-[15px] font-semibold hidden md:flex text-slate-600">
+            <a href="#" class="nav-link hover:text-blue-600 transition">홈</a>
+            <a href="#projects" class="nav-link hover:text-blue-600 transition">분석 리포트</a>
+            <a href="#about" class="nav-link hover:text-blue-600 transition">소개</a>
         </div>
-        <nav>
-            <a href="#" class="text-slate-500 hover:text-sky-600 transition-colors text-sm font-medium">Big Data Analysis Class 2026</a>
-        </nav>
+        <button class="btn-primary text-white px-7 py-2.5 rounded-full text-sm font-bold transition-all hover:scale-105 active:scale-95">
+            Contact
+        </button>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="h-screen flex flex-col justify-center items-center text-center px-4 pt-16">
+        <div class="mb-6 inline-block px-5 py-1.5 rounded-full bg-blue-50 text-blue-600 text-sm font-bold tracking-tight border border-blue-100">
+            2024 Big Data Analysis Archive
+        </div>
+        <h2 class="text-5xl md:text-7xl font-black mb-2 text-slate-900 tracking-tight leading-[1.1]">
+            데이터의 가치를 찾아내는<br><span class="bubble-text">지속적인 탐구와 분석</span>
+        </h2>
+        <!-- 제목 밑에 이름 추가 -->
+        <p class="text-slate-400 text-lg md:text-xl font-semibold mb-8 tracking-widest">
+            영도여고 홍예지
+        </p>
+        <p class="text-slate-500 max-w-2xl text-lg md:text-xl mb-12 leading-relaxed font-medium">
+            사회 현상 속의 복잡한 데이터를 수집하고 정제하여<br>
+            의미 있는 인사이트를 도출하는 과정을 기록한 포트폴리오입니다.
+        </p>
+        <div class="flex space-x-4">
+            <a href="#projects" class="px-9 py-4 bg-slate-900 text-white text-lg font-bold rounded-2xl hover:bg-slate-800 transition-all shadow-xl">
+                리포트 확인하기
+            </a>
+        </div>
     </header>
 
-    <!-- Main Content -->
-    <main class="flex-grow container mx-auto px-4 py-16">
-        
-        <!-- Hero Section -->
-        <section class="text-center mb-20 fade-in-up">
-            <h1 class="text-4xl md:text-5xl font-bold mb-3 text-slate-900 leading-tight">
-                데이터에서 <span class="text-gradient">인사이트</span>를 발견하다
-            </h1>
-            <div class="flex items-center justify-center gap-3 mb-6">
-                <span class="text-base font-semibold text-slate-600 tracking-[0.2em]">홍예지</span>
-                <span class="w-px h-3 bg-slate-300"></span>
-                <span class="text-sm font-medium text-slate-400 tracking-wider">영도여고</span>
-            </div>
-            <p class="text-lg text-slate-600 max-w-2xl mx-auto mb-8 leading-relaxed">
-                빅데이터 분석 교과목을 통해 수행한 다양한 데이터 분석 프로젝트를 소개합니다.<br>
-                교통, 환경, 사회 이슈부터 학문적 분석까지 데이터를 통해 세상을 바라보았습니다.
-            </p>
-            <div class="flex justify-center gap-4">
-                <span class="px-4 py-2 rounded-full bg-sky-100 text-sky-700 text-sm font-medium border border-sky-200">Python</span>
-                <span class="px-4 py-2 rounded-full bg-teal-100 text-teal-700 text-sm font-medium border border-teal-200">Pandas</span>
-                <span class="px-4 py-2 rounded-full bg-emerald-100 text-emerald-700 text-sm font-medium border border-teal-200">Visualization</span>
-            </div>
-        </section>
+    <!-- Project Section -->
+    <main id="projects" class="max-w-7xl mx-auto px-6 py-24">
+        <div class="flex flex-col items-center text-center mb-20">
+            <h3 class="text-4xl font-extrabold mb-5 text-slate-900">Analysis Project</h3>
+            <div class="w-20 h-1.5 bg-blue-600 rounded-full mb-6"></div>
+            <p class="text-slate-500 text-lg font-medium">데이터 사이언스 기법을 활용한 6가지 주제별 분석 결과물입니다.</p>
+        </div>
 
-        <!-- Portfolio Grid -->
-        <section class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
-
-            <a href="index.html" class="block group">
-                <article class="glass-card rounded-2xl p-8 h-full relative overflow-hidden fade-in-up delay-100 flex flex-col">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i data-lucide="car-front" class="w-24 h-24 text-sky-600"></i>
-                    </div>
-                    <div class="mb-4">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-600 mb-2">개인 분석</span>
-                        <h3 class="text-2xl font-bold text-slate-800 group-hover:text-sky-600 transition-colors">면허 경과별 교통사고 분석</h3>
-                    </div>
-                    <p class="text-slate-500 text-sm mb-6 flex-grow">
-                        운전 면허 취득 후 경과 기간에 따른 교통사고 발생률과 패턴을 분석하여 초보 운전자와 숙련 운전자의 위험 요소를 도출했습니다.
-                    </p>
-                    <div class="flex items-center text-sky-600 text-sm font-bold">
-                        View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                    </div>
-                </article>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            
+            <!-- Project 1 -->
+            <a href="01.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-blue-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-blue-600 transition-colors duration-300">
+                    <i class="fas fa-car-side text-blue-600 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">면허경과별 교통사고 분석</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">운전면허 취득 후 경과 기간에 따른 사고 발생의 상관관계를 통계적 기법으로 분석하였습니다.</p>
+                <div class="flex items-center text-blue-600 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
             </a>
 
-            <a href="index.html" class="block group">
-                <article class="glass-card rounded-2xl p-8 h-full relative overflow-hidden fade-in-up delay-200 flex flex-col">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i data-lucide="thermometer-sun" class="w-24 h-24 text-orange-500"></i>
-                    </div>
-                    <div class="mb-4">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-orange-100 text-orange-600 mb-2">개인 분석</span>
-                        <h3 class="text-2xl font-bold text-slate-800 group-hover:text-orange-600 transition-colors">온난화 분석</h3>
-                    </div>
-                    <p class="text-slate-500 text-sm mb-6 flex-grow">
-                        지구 온난화 데이터를 시각화하여 기온 상승 추이를 파악하고, 주요 환경 지표와의 상관관계를 분석했습니다.
-                    </p>
-                    <div class="flex items-center text-orange-600 text-sm font-bold">
-                        View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                    </div>
-                </article>
+            <!-- Project 2 -->
+            <a href="02.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-orange-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-orange-500 transition-colors duration-300">
+                    <i class="fas fa-temperature-high text-orange-500 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">지구 온난화 추이 분석</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">장기간의 기온 변화 데이터를 분석하여 기후 위기의 심각성을 시각화하고 미래를 예측했습니다.</p>
+                <div class="flex items-center text-orange-500 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
             </a>
 
-            <a href="index.html" class="block group">
-                <article class="glass-card rounded-2xl p-8 h-full relative overflow-hidden fade-in-up delay-300 flex flex-col">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i data-lucide="flame" class="w-24 h-24 text-rose-500"></i>
-                    </div>
-                    <div class="mb-4">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-rose-100 text-rose-600 mb-2">조별 과제</span>
-                        <h3 class="text-2xl font-bold text-slate-800 group-hover:text-rose-600 transition-colors">산불 발생 현황 분석</h3>
-                    </div>
-                    <p class="text-slate-500 text-sm mb-6 flex-grow">
-                        지역별, 계절별 산불 발생 빈도와 피해 규모를 분석하여 산불 예방을 위한 데이터 기반의 인사이트를 제공합니다.
-                    </p>
-                    <div class="flex items-center text-rose-600 text-sm font-bold">
-                        View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                    </div>
-                </article>
+            <!-- Project 3 -->
+            <a href="03.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-red-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-red-500 transition-colors duration-300">
+                    <i class="fas fa-fire-alt text-red-500 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">국내 산불발생 현황 분석</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">(조별 과제) 공공 데이터를 활용하여 지역별 산불 발생 빈도와 주요 원인을 비교 분석하였습니다.</p>
+                <div class="flex items-center text-red-500 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
             </a>
 
-            <a href="index.html" class="block group md:col-span-2 lg:col-span-2">
-                <article class="glass-card rounded-2xl p-8 h-full relative overflow-hidden fade-in-up delay-400 border-sky-200 flex flex-col justify-center">
-                    <div class="absolute inset-0 bg-gradient-to-r from-sky-50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"></div>
-                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i data-lucide="library" class="w-40 h-40 text-slate-400"></i>
-                    </div>
-                    <div class="relative z-10">
-                        <div class="flex items-center gap-3 mb-4">
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-indigo-100 text-indigo-700">메인 프로젝트</span>
-                            <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-600">경쟁률 분석</span>
-                        </div>
-                        <h3 class="text-3xl font-bold text-slate-900 mb-4 group-hover:text-sky-700 transition-colors">문헌정보학과 경쟁률 상위 10개 대학 분석</h3>
-                        <p class="text-slate-600 text-base mb-6 max-w-xl">
-                            전국 문헌정보학과의 입시 경쟁률 데이터를 수집하여 상위 10개 대학의 트렌드를 시각화했습니다. 연도별 추이와 대학별 특징을 비교 분석한 핵심 프로젝트입니다.
-                        </p>
-                        <div class="flex items-center text-sky-700 font-bold">
-                            자세히 보기 <i data-lucide="arrow-right" class="ml-2 w-5 h-5 group-hover:translate-x-2 transition-transform"></i>
-                        </div>
-                    </div>
-                </article>
+            <!-- Project 4 -->
+            <a href="04.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-indigo-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-indigo-500 transition-colors duration-300">
+                    <i class="fas fa-university text-indigo-500 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">문헌정보학과 입시 경쟁률</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">주요 10개 대학 문헌정보학과의 경쟁률 추이를 분석하여 학과 선호도의 변화를 파악했습니다.</p>
+                <div class="flex items-center text-indigo-500 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
             </a>
 
-            <a href="index.html" class="block group">
-                <article class="glass-card rounded-2xl p-8 h-full relative overflow-hidden fade-in-up delay-500 flex flex-col">
-                    <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
-                        <i data-lucide="youtube" class="w-24 h-24 text-red-600"></i>
-                    </div>
-                    <div class="mb-4">
-                        <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-600 mb-2">조별 과제</span>
-                        <h3 class="text-2xl font-bold text-slate-800 group-hover:text-red-600 transition-colors">AI 윤리 유튜브 분석</h3>
-                    </div>
-                    <p class="text-slate-500 text-sm mb-6 flex-grow">
-                        유튜브 내 AI 윤리 관련 콘텐츠의 댓글과 조회수를 크롤링하여 대중의 인식과 주요 논쟁점을 텍스트 마이닝했습니다.
-                    </p>
-                    <div class="flex items-center text-red-600 text-sm font-bold">
-                        View Project <i data-lucide="arrow-right" class="ml-2 w-4 h-4 group-hover:translate-x-2 transition-transform"></i>
-                    </div>
-                </article>
+            <!-- Project 5 -->
+            <a href="05.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-emerald-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-emerald-500 transition-colors duration-300">
+                    <i class="fab fa-youtube text-emerald-500 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">유튜브 댓글 감성 분석</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">비정형 텍스트 데이터를 수집하여 특정 이슈에 대한 대중의 긍정 및 부정 반응을 분석하였습니다.</p>
+                <div class="flex items-center text-emerald-500 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
             </a>
 
-        </section>
+            <!-- Project 6 -->
+            <a href="06.html" class="soft-card p-10 group bg-white">
+                <div class="w-14 h-14 bg-purple-50 rounded-2xl flex items-center justify-center mb-8 group-hover:bg-purple-500 transition-colors duration-300">
+                    <i class="fas fa-microchip text-purple-500 text-xl group-hover:text-white transition-colors"></i>
+                </div>
+                <h4 class="text-2xl font-bold mb-4 text-slate-800">AI 윤리 유튜브 콘텐츠 분석</h4>
+                <p class="text-slate-500 mb-8 font-medium leading-relaxed text-sm">인공지능 윤리 관련 담론이 형성되는 양상을 네트워크 분석 기법을 통해 조사하였습니다.</p>
+                <div class="flex items-center text-purple-500 font-bold text-sm">
+                    View Project <i class="fas fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                </div>
+            </a>
+
+        </div>
     </main>
 
-    <footer class="w-full py-8 text-center text-slate-400 text-sm glass-card border-t border-slate-200">
-        <p class="mb-2 text-slate-600">&copy; 2026 빅데이터 분석 포트폴리오.</p>
-        <p>Created with HTML, Tailwind CSS, and Passion for Data.</p>
+    <!-- Footer -->
+    <footer id="about" class="py-20 bg-slate-50 border-t border-slate-200">
+        <div class="max-w-7xl mx-auto px-6 text-center">
+            <div class="mb-10">
+                <h4 class="text-2xl font-extrabold mb-4 text-slate-900">영도여고 홍예지</h4>
+                <p class="text-slate-500 font-medium text-sm">Big Data Analysis Specialist | 2024 Project Archive</p>
+            </div>
+            <div class="flex justify-center space-x-6 text-slate-400">
+                <a href="#" class="hover:text-slate-900 transition-colors"><i class="fab fa-github text-2xl"></i></a>
+                <a href="#" class="hover:text-slate-900 transition-colors"><i class="fas fa-envelope text-2xl"></i></a>
+                <a href="#" class="hover:text-slate-900 transition-colors"><i class="fas fa-file-pdf text-2xl"></i></a>
+            </div>
+            <p class="mt-12 text-slate-400 text-sm">© 2024 Ye-ji Hong. All rights reserved.</p>
+        </div>
     </footer>
 
-    <script>
-        lucide.createIcons();
-
-        // Python Code Rain Effect (Optimized for Density and Opacity)
-        const canvas = document.getElementById('codeCanvas');
-        const ctx = canvas.getContext('2d');
-
-        let width, height, columns, columnData;
-        const fontSize = 13; // 폰트 크기를 약간 줄여서 더 빽빽하게 보이게 조정
-
-        const pythonKeywords = [
-            'def', 'class', 'import', 'from', 'as', 'if', 'else', 'elif', 
-            'while', 'for', 'in', 'try', 'except', 'finally', 'return', 
-            'print', 'len', 'range', 'list', 'dict', 'set', 'None', 
-            'True', 'False', 'lambda', 'with', 'yield', 'pass', 'break',
-            'continue', 'pandas', 'numpy', 'plt', 'sns', 'pd.read_csv',
-            'df.head()', 'df.describe()', 'scipy', 'sklearn', 'matplotlib',
-            'plt.show()', 'train_test_split', 'RandomForest', 'LinearRegression'
-        ];
-
-        function initCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            columns = Math.floor(width / (fontSize * 1.5)); // 간격을 조정하여 열 개수 확보
-
-            columnData = Array(columns).fill(0).map(() => ({
-                y: Math.random() * -100, 
-                speed: Math.random() * 0.12 + 0.08, // 요청하신 대로 느린 속도 유지
-                text: pythonKeywords[Math.floor(Math.random() * pythonKeywords.length)] 
-            }));
-        }
-
-        function drawCodeRain() {
-            // 잔상 효과를 줄여서 더 깨끗하고 연하게 보이게 함
-            ctx.fillStyle = 'rgba(248, 250, 252, 0.2)'; 
-            ctx.fillRect(0, 0, width, height);
-
-            ctx.fillStyle = '#475569'; // Slate 600 계열로 선명도는 유지하되 캔버스 자체 opacity로 연하게 조절
-            ctx.font = `bold ${fontSize}px monospace`;
-
-            columnData.forEach((col, i) => {
-                ctx.fillText(col.text, i * (fontSize * 1.5), col.y * fontSize);
-
-                if (col.y * fontSize > height) {
-                    col.y = -5;
-                    col.text = pythonKeywords[Math.floor(Math.random() * pythonKeywords.length)];
-                }
-                
-                if (Math.random() > 0.99) {
-                    col.text = pythonKeywords[Math.floor(Math.random() * pythonKeywords.length)];
-                }
-
-                col.y += col.speed;
-            });
-        }
-
-        window.addEventListener('resize', initCanvas);
-
-        function animate() {
-            drawCodeRain();
-            requestAnimationFrame(animate);
-        }
-
-        initCanvas();
-        animate();
-    </script>
 </body>
 </html>
